@@ -1,0 +1,290 @@
+/*-- scss:defaults --*/
+
+/* Google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+/* Garfield palette */
+$garfield-orange: #F28C28;
+$garfield-dark-orange: #D96A1B;
+$garfield-cream: #F6E7C1;
+$garfield-beige: #FAF2DA;
+$garfield-brown: #3A2A1A;
+$garfield-tan: #E8D3A7;
+$garfield-red: #B7410E;
+
+$body-bg: $garfield-beige;
+$body-color: $garfield-brown;
+$link-color: $garfield-dark-orange;
+$presentation-heading-color: $garfield-dark-orange;
+$presentation-font-size-root: 30px;
+$presentation-line-height: 1.25;
+$presentation-heading-font: "Bangers", cursive;
+$font-family-sans-serif: "Source Sans 3", sans-serif;
+
+/*-- scss:rules --*/
+
+.reveal {
+  font-family: "Source Sans 3", sans-serif;
+  color: $garfield-brown;
+  background-color: $garfield-beige;
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slide-number {
+  color: $garfield-brown;
+  background: rgba(246, 231, 193, 0.88);
+  border-radius: 8px;
+  padding: 4px 8px;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  font-family: "Bangers", cursive;
+  color: $garfield-dark-orange;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 0 $garfield-cream;
+  margin-bottom: 0.35em;
+}
+
+.reveal h1.title {
+  font-size: 2.3em;
+}
+
+.reveal strong {
+  color: $garfield-red;
+}
+
+.reveal a {
+  color: $garfield-dark-orange;
+}
+
+
+/* remove slide border line */
+.reveal section {
+  border-top: none !important;
+}
+
+/* remove heading underline */
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  border-bottom: none !important;
+}
+
+/* also ensure no horizontal rule styling appears */
+.reveal hr {
+  display: none;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  margin-bottom: 0.25em;
+}
+
+/* code */
+.reveal pre {
+  box-shadow: none;
+  border-radius: 10px;
+}
+
+.reveal pre code {
+  background-color: $garfield-cream;
+  border-left: 8px solid $garfield-orange;
+  color: $garfield-brown;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 0.85em;
+  line-height: 1.25em;
+}
+
+.reveal code {
+  color: $garfield-red;
+  background-color: rgba(246, 231, 193, 0.8);
+  padding: 0.08em 0.22em;
+  border-radius: 4px;
+}
+
+
+/* Title slide banner */
+
+.reveal .title-slide h1 {
+  font-family: "Bangers", cursive;
+  background: linear-gradient(90deg, #F28C28 0%, #D96A1B 100%);
+  color: #F6E7C1;
+  border: 4px solid #3A2A1A;
+  border-radius: 18px;
+  padding: 20px 28px;
+  display: inline-block;
+  margin-bottom: 18px;
+  box-shadow: 4px 4px 0 rgba(58, 42, 26, 0.18);
+  text-shadow: none;
+}
+
+/* subtitle styling */
+
+.reveal .title-slide .subtitle {
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #3A2A1A;
+}
+
+/* author/date */
+
+.reveal .title-slide .author,
+.reveal .title-slide .date {
+  color: #6E4B2A;
+}
+
+/* center title slide content */
+
+.reveal .title-slide {
+  text-align: center;
+}
+
+/* title banner */
+.garfield-banner {
+  background: linear-gradient(90deg, $garfield-orange 0%, $garfield-dark-orange 100%);
+  color: $garfield-cream;
+  border: 4px solid $garfield-brown;
+  border-radius: 18px;
+  padding: 20px 28px;
+  margin: 18px 0 22px 0;
+  box-shadow: 4px 4px 0 rgba(58, 42, 26, 0.18);
+}
+
+.garfield-banner h1,
+.garfield-banner h2,
+.garfield-banner h3,
+.garfield-banner p {
+  color: $garfield-cream !important;
+  margin: 0;
+  text-shadow: none;
+}
+
+.garfield-subtitle {
+  font-size: 0.9em;
+  margin-top: 8px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+
+.reveal .title-slide {
+  background: rgba(246,231,193,0.6);
+  border: 4px solid #F28C28;
+  border-radius: 20px;
+  padding: 40px;
+}
+
+
+/* speech bubble */
+.speech-bubble {
+  position: relative;
+  background: $garfield-cream;
+  border: 3px solid $garfield-dark-orange;
+  border-radius: 22px;
+  padding: 18px 22px;
+  margin: 18px 0 12px 0;
+  color: $garfield-brown;
+  box-shadow: 3px 3px 0 rgba(58, 42, 26, 0.15);
+}
+
+.speech-bubble:after {
+  content: "";
+  position: absolute;
+  left: 42px;
+  bottom: -20px;
+  width: 0;
+  height: 0;
+  border: 12px solid transparent;
+  border-top-color: $garfield-dark-orange;
+  border-bottom: 0;
+  margin-left: -12px;
+}
+
+.speech-bubble:before {
+  content: "";
+  position: absolute;
+  left: 42px;
+  bottom: -16px;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: $garfield-cream;
+  border-bottom: 0;
+  margin-left: -10px;
+  z-index: 2;
+}
+
+.bubble-title {
+  font-family: "Bangers", cursive;
+  color: $garfield-dark-orange;
+  font-size: 1.1em;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25em;
+}
+
+/* pipeline */
+.pipeline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+
+.pipeline-step {
+  background: $garfield-cream;
+  border: 3px solid $garfield-dark-orange;
+  border-radius: 14px;
+  padding: 10px 16px;
+  font-weight: 700;
+  color: $garfield-brown;
+  box-shadow: 2px 2px 0 rgba(58, 42, 26, 0.12);
+}
+
+.pipeline-step.active {
+  background: $garfield-orange;
+  color: $garfield-brown;
+}
+
+
+.pipeline-arrow {
+  font-size: 1.6em;
+  color: $garfield-dark-orange;
+  padding: 0 0.0em;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+}
+
+
+/* panels */
+.panel {
+  background: rgba(255,255,255,0.42);
+  border: 2px solid $garfield-tan;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-top: 10px;
+}
+
+/* helpers */
+.center {
+  text-align: center;
+}
+
+.small {
+  font-size: 0.8em;
+}
+
+.tight p,
+.tight ul,
+.tight ol {
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}

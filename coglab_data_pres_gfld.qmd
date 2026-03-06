@@ -1,0 +1,483 @@
+---
+title: "CogLab Data Pipeline"
+subtitle: "From raw files to interpretable visualizations"
+author: "Ryan Mears and LLM"
+institute: "University of Florida"
+format:
+  revealjs:
+    template-partials:
+      - title-slide.html
+    theme:
+      - default
+      - garfield.scss
+    slide-number: true
+    incremental: true
+    transition: fade
+    transition-speed: slow
+    center: false
+    smaller: true
+
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+ 
+
+```{r}
+#| echo: false
+
+
+library(tidyverse)
+library(janitor)
+
+garfield_cols <- c(
+  orange = "#F28C28",
+  dark_orange = "#D96A1B",
+  cream = "#F6E7C1",
+  beige = "#FAF2DA",
+  brown = "#3A2A1A",
+  tan = "#E8D3A7",
+  red = "#B7410E"
+)
+
+scale_color_garfield <- function(...) {
+  ggplot2::scale_color_manual(
+    values = c("#F28C28", "#D96A1B", "#B7410E", "#A66A2C", "#6E4B2A"),
+    ...
+  )
+}
+
+scale_fill_garfield <- function(...) {
+  ggplot2::scale_fill_manual(
+    values = c("#F28C28", "#D96A1B", "#E8D3A7", "#F6E7C1", "#B7410E"),
+    ...
+  )
+}
+
+theme_garfield <- function(base_size = 18, base_family = "sans") {
+  ggplot2::theme_minimal(base_size = base_size, base_family = base_family) +
+    ggplot2::theme(
+      plot.background = ggplot2::element_rect(fill = "#FAF2DA", color = NA),
+      panel.background = ggplot2::element_rect(fill = "#F6E7C1", color = NA),
+      panel.grid.major = ggplot2::element_line(color = "#E8D3A7", linewidth = 0.5),
+      panel.grid.minor = ggplot2::element_blank(),
+      plot.title = ggplot2::element_text(face = "bold", color = "#B7410E", size = base_size * 1.2),
+      plot.subtitle = ggplot2::element_text(color = "#6E4B2A"),
+      axis.title = ggplot2::element_text(color = "#3A2A1A", face = "bold"),
+      axis.text = ggplot2::element_text(color = "#3A2A1A"),
+      legend.title = ggplot2::element_text(face = "bold", color = "#3A2A1A"),
+      legend.text = ggplot2::element_text(color = "#3A2A1A"),
+      strip.background = ggplot2::element_rect(fill = "#F28C28", color = "#D96A1B"),
+      strip.text = ggplot2::element_text(color = "#3A2A1A", face = "bold")
+    )
+}
+
+```
+
+# Overview
+
+
+::: {.bubble-title}
+
+Deck purpose
+
+:::
+
+This presentation shows a practical sequence for moving from imported CogLab data to <br /> tidy variables, validated summaries, and clearer interpretation.
+
+
+
+::: notes
+
+Introduce the deck as a workflow map rather than just a sequence of code steps.
+Emphasize that students often underestimate the importance of cleaning and validation.
+
+:::
+
+# Overview
+
+::: {.speech-bubble}
+::: {.bubble-title}
+
+Why this workflow matters
+
+:::
+
+Raw CogLab data usually do **not** begin in a form ready for interpretation.
+
+We need a pipeline to move from **files** to **tidy variables** to **validated summaries**.
+
+:::
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step active fragment">Provision</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Import</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Tidy</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Transform</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Visualize/Validate</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Re-Visualize</span>
+
+:::
+
+::: notes
+Frame the pipeline as a sequence of decisions.
+You can mention that most effort in real projects occurs before inferential statistics.
+:::
+
+# Provision packages
+
+## Slide 1
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step active">Provision</span> <span class="pipeline-arrow">➡</span> <span class="pipeline-step">Import</span> <span class="pipeline-arrow">➡</span> <span class="pipeline-step">Tidy</span> <span class="pipeline-arrow">➡</span> <span class="pipeline-step">Transform</span> <span class="pipeline-arrow">➡</span> <span class="pipeline-step">Visualize/Validate</span> <span class="pipeline-arrow">➡</span> <span class="pipeline-step">Re-Visualize</span>
+
+:::
+
+::: {.speech-bubble}
+::: {.bubble-title}
+
+Goal
+
+:::
+
+Load packages needed for wrangling, checking, and plotting.
+
+:::
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(readr)
+library(stringr)
+library(forcats)
+```
+
+::: notes
+Explain why package provisioning is part of reproducibility.
+Students should learn that dependencies are part of the method.
+:::
+
+# Import data
+
+## Slide 2
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step">Provision</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step active">Import</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Tidy</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Transform</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Visualize/Validate</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Re-Visualize</span>
+
+:::
+
+
+::: {.speech-bubble}
+::: {.bubble-title}
+
+Import question
+
+:::
+
+What files exist, and what variables arrive from CogLab in raw form?
+
+:::
+
+```{r}
+data_raw <- tibble(
+  subj = c("s01", "s02", "s03", "s04"),
+  Cond = c("Valid", "Invalid", "Valid", "Invalid"),
+  RT_ms = c(510, 640, 490, 710),
+  Accuracy = c(1, 0, 1, 1)
+)
+
+data_raw
+```
+
+::: notes
+
+Point out that imported names and types are often inconsistent with analysis needs.
+This is a good place to discuss file formats and provenance.
+
+:::
+
+# Tidy names and data types
+
+## Slide 3
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step">Provision</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Import</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step active">Tidy</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Transform</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Visualize/Validate</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Re-Visualize</span>
+
+:::
+
+::: {.speech-bubble}
+::: {.bubble-title}
+
+Cleaning question
+
+:::
+
+Are names consistent and are variable classes appropriate for analysis?
+
+:::
+
+```{r}
+data_tidy <- data_raw |>
+  janitor::clean_names() |>
+  mutate(
+    cond = factor(str_to_lower(cond)),
+    accuracy = as.logical(accuracy)
+  )
+
+glimpse(data_tidy)
+```
+
+::: notes
+
+Explain why tidy naming reduces downstream confusion.
+Mention that factor, logical, numeric, and character types imply different kinds of operations.
+
+:::
+
+# Transform
+
+## Slide 4
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step">Provision</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Import</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Tidy</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step active">Transform</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Visualize/Validate</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Re-Visualize</span>
+
+:::
+
+::: {.speech-bubble}
+::: {.bubble-title}
+
+Transform question
+
+:::
+
+What derived variables help us understand performance?
+
+:::
+
+```{r}
+data_trans <- data_tidy |>
+  mutate(
+    rt_s = rt_ms / 1000,
+    acc_num = as.integer(accuracy)
+  )
+
+data_trans
+```
+
+::: notes
+
+Use this slide to distinguish direct measurements from derived variables.
+This is often where methods sections need extra specificity.
+
+:::
+
+# Visualize and Validate
+
+## Slide 5
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step">Provision</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Import</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Tidy</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Transform</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step active">Visualize/Validate</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Re-Visualize</span>
+
+:::
+
+
+
+::: {.speech-bubble}
+::: {.bubble-title}
+
+First look
+
+:::
+
+Before modeling, inspect distributions and obvious condition differences.
+
+:::
+
+
+```{r}
+#| echo: true
+#| output-location: column-fragment
+
+ggplot(data_trans, aes(x = cond, y = rt_ms, fill = cond)) +
+  geom_boxplot(alpha = 0.9, width = 0.6) +
+  scale_fill_garfield() +
+  labs(
+    title = "Response time by condition",
+    x = "Condition",
+    y = "RT (ms)"
+  ) +
+  theme_garfield(18)
+```
+
+
+
+::: notes
+
+Stress that visualization is part of validation, not just presentation.
+Students should see the plot as a diagnostic tool.
+
+:::
+
+## Slide 6
+
+::: {.speech-bubble}
+::: {.bubble-title}
+
+Validation question
+
+:::
+
+Do the values look plausible, or are there impossible or suspicious observations?
+
+:::
+
+```{r}
+
+data_trans |>
+  summarise(
+    n = n(),
+    min_rt = min(rt_ms, na.rm = TRUE),
+    max_rt = max(rt_ms, na.rm = TRUE),
+    mean_rt = mean(rt_ms, na.rm = TRUE),
+    accuracy_rate = mean(acc_num, na.rm = TRUE)
+  )
+```
+
+::: notes
+
+Summaries can reveal range problems that are not obvious from a plot.
+Connect this to conditional validation rules.
+
+:::
+
+## Slide 7
+
+::: {.speech-bubble}
+::: {.bubble-title}
+
+Flagging rule example
+
+:::
+
+A common rule is to identify implausibly short or long reaction times.
+
+:::
+
+```{r}
+data_checked <- data_trans |>
+  mutate(
+    rt_flag = case_when(
+      rt_ms < 150 ~ "too_fast",
+      rt_ms > 2000 ~ "too_slow",
+      TRUE ~ "ok"
+    )
+  )
+
+data_checked
+```
+
+::: notes
+
+Explain that thresholds should be justified and reported.
+This is where arbitrary cleaning choices can become hidden assumptions.
+
+:::
+
+# Re-Visualize
+
+## Slide 8
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step">Provision</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Import</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Tidy</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Transform</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Visualize/Validate</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step active">Re-Visualize</span>
+
+:::
+
+::: {.speech-bubble}
+::: {.bubble-title}
+
+After validation
+
+:::
+
+Plot again after defining checks so that interpretation reflects conditioned data.
+
+:::
+
+```{r}
+#| fig-width: 10
+#| fig-height: 5.8
+#| out-width: 100%
+#| fig-align: center
+
+ggplot(data_checked, aes(x = rt_ms, fill = rt_flag)) +
+  geom_histogram(binwidth = 50, color = "#3A2A1A") +
+  scale_fill_garfield() +
+  labs(
+    title = "RT distribution after validation rules",
+    x = "RT (ms)",
+    y = "Count",
+    fill = "Flag"
+  ) +
+  theme_garfield()
+```
+
+::: notes
+
+This is a good point to compare before and after.
+Emphasize that preprocessing changes what later conclusions mean.
+
+:::
+
+# Discuss
+
+## Slide 9
+
+::: {.speech-bubble}
+::: {.bubble-title}
+
+Discussion prompts
+
+:::
+
+* Which data-cleaning decisions were **required** versus **optional**?
+* Which transformations changed interpretation the most?
+* What assumptions should be reported in the methods section?
+
+:::
+
+::: notes
+
+Invite students to treat the pipeline as an argument, not just a recipe.
+Each step should be explainable and defendable.
+
+:::
+
+## Slide 10
+
+::: {.speech-bubble}
+::: {.bubble-title}
+
+Take-home message
+
+:::
+
+The analysis is only as interpretable as the pipeline that produced it.
+Good visualization helps reveal whether the data are ready for inference.
+
+:::
+
+::: notes
+
+Close by linking the pipeline to reproducibility, transparency, and methods reporting.
+
+:::
+
+
+
+## Credits 
+
+- [Hero Fandom: Garfield](https://hero.fandom.com/wiki/Garfield)
