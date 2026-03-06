@@ -1,6 +1,6 @@
 Readme.md
 ====
 
-[](coglab_data_pres_gfld.html)
+- [Slides](coglab_data_pres_gfld.html)
 
 
