@@ -5,8 +5,6 @@ author: "Ryan Mears and LLM"
 institute: "University of Florida"
 format:
   revealjs:
-    template-partials:
-      - title-slide.html
     theme:
       - default
       - garfield.scss
@@ -14,6 +12,9 @@ format:
     incremental: true
     transition: fade
     transition-speed: slow
+    navigation-mode: vertical
+    controls-layout: bottom-right
+    controls-tutorial: true
     center: false
     smaller: true
 
@@ -408,10 +409,11 @@ Plot again after defining checks so that interpretation reflects conditioned dat
 :::
 
 ```{r}
-#| fig-width: 10
-#| fig-height: 5.8
+#| fig-width: 20
+#| fig-height: 10
 #| out-width: 100%
 #| fig-align: center
+#| output-location: slide
 
 ggplot(data_checked, aes(x = rt_ms, fill = rt_flag)) +
   geom_histogram(binwidth = 50, color = "#3A2A1A") +
@@ -422,7 +424,7 @@ ggplot(data_checked, aes(x = rt_ms, fill = rt_flag)) +
     y = "Count",
     fill = "Flag"
   ) +
-  theme_garfield()
+  theme_garfield(28)
 ```
 
 ::: notes
