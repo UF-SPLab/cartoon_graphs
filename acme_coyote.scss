@@ -1,0 +1,353 @@
+/*-- scss:defaults --*/
+
+/* Google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Oswald:wght@300;400;500;600;700&family=Special+Elite&display=swap');
+
+/* Wile E. Coyote / ACME palette */
+$acme-red: #B23A2B;
+$acme-rust: #8E2C21;
+$acme-sand: #E8D8B5;
+$acme-desert: #F3E8C8;
+$acme-khaki: #C7AE7B;
+$acme-charcoal: #2E2A26;
+$acme-steel: #5E6166;
+$acme-warning: #D98C1F;
+$acme-paper: #FBF5E6;
+
+/* ACME highlight accent (olive military crate color) */
+$acme-olive: #5B6F2A;
+
+$body-bg: $acme-desert;
+$body-color: $acme-charcoal;
+$link-color: $acme-rust;
+$presentation-heading-color: $acme-rust;
+$presentation-font-size-root: 30px;
+$presentation-line-height: 1.24;
+$presentation-heading-font: "Black Ops One", system-ui, sans-serif;
+$font-family-sans-serif: "Oswald", Arial, sans-serif;
+
+/*-- scss:rules --*/
+
+.reveal {
+  font-family: "Oswald", Arial, sans-serif;
+  color: $acme-charcoal;
+  background-color: $acme-desert;
+  background-image:
+    radial-gradient(circle at top right, rgba(217, 140, 31, 0.08), transparent 24%),
+    linear-gradient(180deg, rgba(199, 174, 123, 0.12), rgba(243, 232, 200, 0));
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slide-number {
+  color: $acme-paper;
+  background: rgba(46, 42, 38, 0.86);
+  border-radius: 8px;
+  padding: 4px 9px;
+  border: 2px solid rgba(199, 174, 123, 0.55);
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  font-family: "Black Ops One", system-ui, sans-serif;
+  color: $acme-rust;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0 rgba(251, 245, 230, 0.85);
+  margin-bottom: 0.28em;
+  border-bottom: none !important;
+}
+
+.reveal h1.title {
+  font-size: 2.15em;
+}
+
+.reveal p,
+.reveal li,
+.reveal td,
+.reveal th {
+  font-family: "Oswald", Arial, sans-serif;
+}
+
+.reveal strong {
+  color: $acme-red;
+}
+
+.reveal em {
+  font-family: "Special Elite", monospace;
+  font-style: normal;
+}
+
+.reveal a {
+  color: $acme-rust;
+}
+
+/* remove slide border line */
+.reveal section {
+  border-top: none !important;
+}
+
+/* also ensure no horizontal rule styling appears */
+.reveal hr {
+  display: none;
+}
+
+/* code */
+.reveal pre {
+  box-shadow: none;
+  border-radius: 10px;
+}
+
+.reveal pre code {
+  background-color: $acme-paper;
+  border-left: 8px solid $acme-red;
+  color: $acme-charcoal;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 0.82em;
+  line-height: 1.25em;
+}
+
+.reveal code {
+  color: $acme-rust;
+  background-color: rgba(251, 245, 230, 0.9);
+  padding: 0.08em 0.24em;
+  border-radius: 4px;
+}
+
+/* Title slide */
+.reveal .title-slide {
+  text-align: center;
+  background: linear-gradient(180deg, rgba(251,245,230,0.88), rgba(232,216,181,0.76));
+  border: 4px solid $acme-rust;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 0 0 6px rgba(199, 174, 123, 0.22);
+}
+
+.reveal .title-slide h1 {
+  font-family: "Black Ops One", system-ui, sans-serif;
+  background: linear-gradient(180deg, $acme-red 0%, $acme-rust 100%);
+  color: $acme-paper;
+  border: 4px solid $acme-charcoal;
+  border-radius: 14px;
+  padding: 20px 28px;
+  display: inline-block;
+  margin-bottom: 18px;
+  text-shadow: none;
+  box-shadow: 4px 4px 0 rgba(46, 42, 38, 0.16);
+}
+
+.reveal .title-slide .subtitle {
+  font-family: "Special Elite", monospace;
+  font-size: 1.02em;
+  letter-spacing: 0.5px;
+  color: $acme-steel;
+}
+
+.reveal .title-slide .author,
+.reveal .title-slide .date {
+  color: #56473B;
+}
+
+/* ACME crate banner */
+.acme-banner {
+  background: linear-gradient(180deg, $acme-red 0%, $acme-rust 100%);
+  color: $acme-paper;
+  border: 4px solid $acme-charcoal;
+  border-radius: 14px;
+  padding: 20px 28px;
+  margin: 18px 0 22px 0;
+  box-shadow: 4px 4px 0 rgba(46, 42, 38, 0.16);
+}
+
+.acme-banner h1,
+.acme-banner h2,
+.acme-banner h3,
+.acme-banner p {
+  color: $acme-paper !important;
+  margin: 0;
+  text-shadow: none;
+}
+
+.acme-subtitle {
+  font-family: "Special Elite", monospace;
+  font-size: 0.84em;
+  margin-top: 8px;
+  letter-spacing: 0.7px;
+}
+
+/* Typewriter note / order form block */
+.order-slip {
+  background: $acme-paper;
+  border: 3px dashed $acme-steel;
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin: 18px 0 12px 0;
+  color: $acme-charcoal;
+  box-shadow: 3px 3px 0 rgba(46, 42, 38, 0.12);
+}
+
+.order-slip,
+.order-slip p,
+.order-slip li {
+  font-family: "Special Elite", monospace;
+}
+
+.order-title {
+  font-family: "Black Ops One", system-ui, sans-serif !important;
+  color: $acme-rust;
+  font-size: 1.02em;
+  letter-spacing: 0.6px;
+  margin-bottom: 0.3em;
+}
+
+/* Gadget specification card */
+.gadget-spec {
+  background: rgba(251, 245, 230, 0.96);
+  border: 3px solid $acme-khaki;
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin: 14px 0;
+  box-shadow: 2px 2px 0 rgba(94, 97, 102, 0.12);
+}
+
+.gadget-spec h3,
+.gadget-spec h4 {
+  color: $acme-red;
+  margin-top: 0;
+}
+
+/* Warning label */
+.coyote-warning {
+  background: linear-gradient(90deg, rgba(217,140,31,0.18), rgba(178,58,43,0.12));
+  border-left: 8px solid $acme-warning;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 16px 0;
+  font-weight: 500;
+}
+
+/* Blueprint / technical box */
+.blueprint-box {
+  background: #E8EFEF;
+  border: 3px solid $acme-steel;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 16px 0;
+  color: #263238;
+}
+
+.blueprint-box h3,
+.blueprint-box h4,
+.blueprint-box strong {
+  color: #314A59;
+}
+
+
+/* pipeline */
+.pipeline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+
+.pipeline-step {
+  background: $acme-paper;
+  border: 3px solid $acme-rust;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 600;
+  color: $acme-charcoal;
+  box-shadow: 2px 2px 0 rgba(46, 42, 38, 0.12);
+  text-transform: uppercase;
+}
+
+.pipeline-step.active {
+  background: $acme-warning;
+  color: $acme-charcoal;
+}
+
+.pipeline-arrow {
+  font-size: 1.75em;
+  color: $acme-rust;
+  font-weight: 900;
+}
+
+/* tables */
+.reveal table {
+  border-collapse: collapse;
+  font-size: 0.84em;
+}
+
+.reveal table th {
+  background: $acme-rust;
+  color: $acme-paper;
+}
+
+.reveal table th,
+.reveal table td {
+  border: 1px solid rgba(46, 42, 38, 0.18);
+  padding: 0.35em 0.55em;
+}
+
+/* blockquote */
+.reveal blockquote {
+  background: rgba(251,245,230,0.78);
+  border-left: 8px solid $acme-khaki;
+  color: $acme-charcoal;
+  padding: 0.7em 1em;
+  box-shadow: none;
+}
+
+/* highlighted emphasis text */
+.acme-highlight {
+  color: $acme-olive;
+  font-weight: 700;
+}
+
+/* pipeline arrows */
+.pipeline-arrow {
+  color: $acme-olive;
+  font-weight: 900;
+}
+
+/* gadget specification labels */
+.gadget-spec strong {
+  color: $acme-olive;
+}
+
+/* blueprint boxes */
+.blueprint-box {
+  border-left: 6px solid $acme-olive;
+}
+
+/* warnings */
+.coyote-warning {
+  border-left: 8px solid $acme-olive;
+}
+
+/* subtitle accents */
+.acme-subtitle {
+  color: $acme-olive;
+}
+
+/* list bullets */
+.reveal ul li::marker {
+  color: $acme-olive;
+}
+
+/* links */
+.reveal a {
+  color: $acme-olive;
+}
+
+.reveal a:hover {
+  color: darken($acme-olive, 10%);
+}

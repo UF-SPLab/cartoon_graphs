@@ -1,0 +1,565 @@
+---
+title: "ACME FIELD MANUAL"
+subtitle: "COGLAB DATA PIPELINE: Gadget concept to desert deployment"
+author: "Wile E. Coyote, Ph.D., Super Genius"
+institute: "New Mexico Institute of Technology"
+date: today
+format:
+  revealjs:
+    theme:
+      - default
+      - acme_coyote.scss
+    title-slide-attributes:
+      acme-subtitle: true
+      data-background-gradient: "linear-gradient(180deg, #FBF5E6 0%, #E8D8B5 100%)"
+    slide-number: true
+    incremental: true
+    transition: fade
+    transition-speed: slow
+    navigation-mode: vertical
+    controls-layout: bottom-right
+    controls-tutorial: false
+    center: true
+    smaller: true
+
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+#| echo: false
+
+library(ggplot2)
+
+
+acme_cols <- c(
+  red       = "#B23A2B",
+  rust      = "#8E2C21",
+  olive     = "#5B6F2A",
+  sand      = "#E8D8B5",
+  desert    = "#F3E8C8",
+  khaki     = "#C7AE7B",
+  charcoal  = "#2E2A26",
+  steel     = "#5E6166",
+  warning   = "#D98C1F",
+  paper     = "#FBF5E6",
+  blueprint = "#E8EFEF"
+)
+
+
+scale_fill_acme <- function(...) {
+  ggplot2::scale_fill_manual(
+    values = c(
+      "#B23A2B",
+      "#8E2C21",
+      "#5B6F2A",
+      "#D98C1F",
+      "#E8D8B5",
+      "#C7AE7B",
+      "#2E2A26"  # charcoal
+    ),
+    ...
+  )
+}
+
+
+scale_color_acme <- function(...) {
+  ggplot2::scale_color_manual(
+    values = c(
+      "#B23A2B",  # red
+      "#8E2C21",  # rust
+      "#5B6F2A",  # olive accent
+      "#D98C1F",  # warning
+      "#5E6166",  # steel
+      "#C7AE7B",   # khaki
+      "#E8EFEF"  # blueprint
+    ),
+    ...
+  )
+}
+
+theme_acme <- function(base_size = 18, base_family = "sans") {
+  ggplot2::theme_minimal(base_size = base_size, base_family = base_family) +
+    ggplot2::theme(
+      text = ggplot2::element_text(color = "#2E2A26"),
+      plot.background = ggplot2::element_rect(fill = "#E8EFEF", color = NA),
+      panel.background = ggplot2::element_rect(fill = "#FEFCF7", color = NA),
+      panel.grid.major = ggplot2::element_line(color = "#E8D8B5", linewidth = 0.55),
+      panel.grid.minor = ggplot2::element_blank(),
+
+      plot.title = ggplot2::element_text(
+        face = "bold",
+        color = "#8E2C21",
+        size = base_size * 1.25
+      ),
+      plot.subtitle = ggplot2::element_text(color = "#5E6166"),
+      plot.caption = ggplot2::element_text(color = "#5E6166"),
+
+      axis.title = ggplot2::element_text(color = "#2E2A26", face = "bold"),
+      axis.text = ggplot2::element_text(color = "#2E2A26"),
+      axis.ticks = ggplot2::element_line(color = "#5B6F2A"),
+      axis.line = ggplot2::element_line(color = "#5B6F2A", linewidth = 0.4),
+
+      legend.title = ggplot2::element_text(face = "bold", color = "#5B6F2A"),
+      legend.text = ggplot2::element_text(color = "#2E2A26"),
+      legend.background = ggplot2::element_rect(fill = "#FEFCF7", color = NA),
+      legend.key = ggplot2::element_rect(fill = "#FEFCF7", color = NA),
+
+      strip.background = ggplot2::element_rect(fill = "#5B6F2A", color = "#2E2A26"),
+      strip.text = ggplot2::element_text(color = "#FEFCF7", face = "bold")
+    )
+}
+
+
+
+```
+
+# Overview
+
+
+::: {.acme-banner}
+
+DATA ANALYSIS PIPELINES
+
+:::
+::: {.acme-subtitle}
+
+This presentation shows a practical sequence for moving from imported CogLab data to <br /> tidy variables, validated summaries, and clearer interpretation.
+
+:::
+
+
+::: notes
+
+Introduce the deck as a workflow map rather than just a sequence of code steps.
+Emphasize that students often underestimate the importance of cleaning and validation.
+
+:::
+
+# Overview
+
+::: {.order-slip}
+::: {.order-title}
+
+**Why this workflow matters**
+
+
+:::
+
+Raw CogLab data usually do **not** begin in a form ready for interpretation.
+
+We need a pipeline to move from **files** to **tidy variables** to **validated summaries**.
+
+:::
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step active fragment">Provision</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Import</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Tidy</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Transform</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Visualize/Validate</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Re-Visualize</span>
+
+:::
+
+::: notes
+Frame the pipeline as a sequence of decisions.
+You can mention that most effort in real projects occurs before inferential statistics.
+:::
+
+# Provision packages
+
+## Slide 1
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step active">Provision</span> <span class="pipeline-arrow">➡</span> <span class="pipeline-step">Import</span> <span class="pipeline-arrow">➡</span> <span class="pipeline-step">Tidy</span> <span class="pipeline-arrow">➡</span> <span class="pipeline-step">Transform</span> <span class="pipeline-arrow">➡</span> <span class="pipeline-step">Visualize/Validate</span> <span class="pipeline-arrow">➡</span> <span class="pipeline-step">Re-Visualize</span>
+
+:::
+
+::: {.order-slip}
+::: {.order-title}
+
+Goal
+
+:::
+
+Load packages needed for wrangling, checking, and plotting.
+
+:::
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(readr)
+library(stringr)
+library(forcats)
+```
+
+::: notes
+Explain why package provisioning is part of reproducibility.
+Students should learn that dependencies are part of the method.
+:::
+
+# Import data
+
+## Slide 2
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step">Provision</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step active">Import</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Tidy</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Transform</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Visualize/Validate</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Re-Visualize</span>
+
+:::
+
+
+::: {.order-slip}
+::: {.order-title}
+
+Import question
+
+:::
+
+What files exist, and what variables arrive from CogLab in raw form?
+
+:::
+
+```{r}
+data_raw <- tibble(
+  subj = c("s01", "s02", "s03", "s04"),
+  Cond = c("Valid", "Invalid", "Valid", "Invalid"),
+  RT_ms = c(510, 640, 490, 710),
+  Accuracy = c(1, 0, 1, 1)
+)
+
+data_raw
+```
+
+::: notes
+
+Point out that imported names and types are often inconsistent with analysis needs.
+This is a good place to discuss file formats and provenance.
+
+:::
+
+# Tidy names and data types
+
+## Slide 3
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step">Provision</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Import</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step active">Tidy</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Transform</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Visualize/Validate</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Re-Visualize</span>
+
+:::
+
+::: {.order-slip}
+::: {.order-title}
+
+Cleaning question
+
+:::
+
+Are names consistent and are variable classes appropriate for analysis?
+
+:::
+
+```{r}
+data_tidy <- data_raw |>
+  janitor::clean_names() |>
+  mutate(
+    cond = factor(str_to_lower(cond)),
+    accuracy = as.logical(accuracy)
+  )
+
+glimpse(data_tidy)
+```
+
+::: notes
+
+Explain why tidy naming reduces downstream confusion.
+Mention that factor, logical, numeric, and character types imply different kinds of operations.
+
+:::
+
+# Transform
+
+## Slide 4
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step">Provision</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Import</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Tidy</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step active">Transform</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Visualize/Validate</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Re-Visualize</span>
+
+:::
+
+::: {.order-slip}
+::: {.order-title}
+
+Transform question
+
+:::
+
+What derived variables help us understand performance?
+
+:::
+
+```{r}
+data_trans <- data_tidy |>
+  mutate(
+    rt_s = rt_ms / 1000,
+    acc_num = as.integer(accuracy)
+  )
+
+data_trans
+```
+
+::: notes
+
+Use this slide to distinguish direct measurements from derived variables.
+This is often where methods sections need extra specificity.
+
+:::
+
+# Visualize and Validate
+
+## Slide 5
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step">Provision</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Import</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Tidy</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Transform</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step active">Visualize/Validate</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Re-Visualize</span>
+
+:::
+
+
+
+::: {.order-slip}
+::: {.order-title}
+
+First look
+
+:::
+
+Before modeling, inspect distributions and obvious condition differences.
+
+:::
+
+
+```{r}
+#| echo: true
+#| output-location: column-fragment
+
+ggplot(data_trans, aes(x = cond, y = rt_ms, fill = cond)) +
+  geom_boxplot(alpha = 0.9, width = 0.6) +
+  scale_fill_acme() +
+  labs(
+    title = "Response time by condition",
+    x = "Condition",
+    y = "RT (ms)"
+  ) +
+  theme_acme(18)
+```
+
+
+
+::: notes
+
+Stress that visualization is part of validation, not just presentation.
+Students should see the plot as a diagnostic tool.
+
+:::
+
+## Slide 6
+
+::: {.order-slip}
+::: {.order-title}
+
+Validation question
+
+:::
+
+Do the values look plausible, or are there impossible or suspicious observations?
+
+:::
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+```{r}
+
+data_trans |>
+  summarise(
+    n = n(),
+    min_rt = min(rt_ms, na.rm = TRUE),
+    max_rt = max(rt_ms, na.rm = TRUE),
+    mean_rt = mean(rt_ms, na.rm = TRUE),
+    accuracy_rate = mean(acc_num, na.rm = TRUE)
+  )
+
+
+
+```
+
+
+:::
+
+::: {.column width="60%"}
+
+```{r}
+
+
+ggplot(mtcars, aes(wt, mpg, color = factor(cyl))) +
+  geom_point(size = 4) +
+  scale_color_acme() +
+  labs(
+    title = "ACME Rocket Propulsion Efficiency",
+    subtitle = "Field trials conducted in desert test range",
+    x = "Vehicle weight",
+    y = "Miles per gallon"
+  ) +
+  theme_acme()
+
+```
+
+
+:::
+
+::::
+
+
+
+
+::: notes
+
+Summaries can reveal range problems that are not obvious from a plot.
+Connect this to conditional validation rules.
+
+:::
+
+
+
+## Slide 7
+
+::: {.order-slip}
+::: {.order-title}
+
+Flagging rule example
+
+:::
+
+A common rule is to identify implausibly short or long reaction times.
+
+:::
+
+```{r}
+data_checked <- data_trans |>
+  mutate(
+    rt_flag = case_when(
+      rt_ms < 150 ~ "too_fast",
+      rt_ms > 2000 ~ "too_slow",
+      TRUE ~ "ok"
+    )
+  )
+
+data_checked
+```
+
+::: notes
+
+Explain that thresholds should be justified and reported.
+This is where arbitrary cleaning choices can become hidden assumptions.
+
+:::
+
+# Re-Visualize
+
+## Slide 8
+
+::: {.pipeline .center} 
+
+<span class="pipeline-step">Provision</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Import</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Tidy</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Transform</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step">Visualize/Validate</span> <span class="pipeline-arrow">→</span> <span class="pipeline-step active">Re-Visualize</span>
+
+:::
+
+::: {.order-slip}
+::: {.order-title}
+
+After validation
+
+:::
+
+Plot again after defining checks so that interpretation reflects conditioned data.
+
+:::
+
+```{r}
+#| fig-width: 20
+#| fig-height: 10
+#| out-width: 100%
+#| fig-align: center
+#| output-location: slide
+
+ggplot(data_checked, aes(x = rt_ms, fill = rt_flag)) +
+  geom_histogram(binwidth = 50, color = "#3A2A1A") +
+  scale_fill_acme() +
+  labs(
+    title = "RT distribution after validation rules",
+    x = "RT (ms)",
+    y = "Count",
+    fill = "Flag"
+  ) +
+  theme_acme(28)
+```
+
+::: notes
+
+This is a good point to compare before and after.
+Emphasize that preprocessing changes what later conclusions mean.
+
+:::
+
+# Discuss
+
+## Slide 9
+
+::: {.order-slip}
+::: {.order-title}
+
+Discussion prompts
+
+:::
+
+* Which data-cleaning decisions were **required** versus **optional**?
+* Which transformations changed interpretation the most?
+* What assumptions should be reported in the methods section?
+
+:::
+
+::: notes
+
+Invite students to treat the pipeline as an argument, not just a recipe.
+Each step should be explainable and defendable.
+
+:::
+
+## Slide 10
+
+::: {.order-slip}
+::: {.order-title}
+
+Take-home message
+
+:::
+
+The analysis is only as interpretable as the pipeline that produced it.
+Good visualization helps reveal whether the data are ready for inference.
+
+:::
+
+::: notes
+
+Close by linking the pipeline to reproducibility, transparency, and methods reporting.
+
+:::
+
+
+
+## Credits 
+
+
