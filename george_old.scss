@@ -1,7 +1,7 @@
 /*-- scss:defaults --*/
 
 /* Google fonts */
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Source+Sans+3:wght@300;400;600;700&display=swap');
 
 /* George palette */
 $george-yellow: #ffea00;
@@ -26,18 +26,15 @@ $body-bg: $george-beige;
 $body-color: $george-black;
 $link-color: $george-orange;
 $presentation-heading-color: $george-darkred;
-
 $presentation-font-size-root: 30px;
 $presentation-line-height: 1.25;
-
-$presentation-heading-font: "Dancing Script", cursive;
-$font-family-sans-serif: "Montserrat", sans-serif;
-
+$presentation-heading-font: "Bangers", cursive;
+$font-family-sans-serif: "Source Sans 3", sans-serif;
 
 /*-- scss:rules --*/
 
 .reveal {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Source Sans 3", sans-serif;
   color: $george-black;
   background-color: $george-beige;
 }
@@ -53,26 +50,19 @@ $font-family-sans-serif: "Montserrat", sans-serif;
   padding: 4px 8px;
 }
 
-
-/* Headings */
-
 .reveal h1,
 .reveal h2,
 .reveal h3 {
-  font-family: "Dancing Script", cursive;
+  font-family: "Bangers", cursive;
   color: $george-lightblue;
-  letter-spacing: 0.02em;
+  letter-spacing: 1px;
   text-shadow: 1px 1px 0 $george-cream;
-  margin-bottom: 0.25em;
-  line-height: 1.1;
+  margin-bottom: 0.35em;
 }
 
 .reveal h1.title {
   font-size: 2.3em;
 }
-
-
-/* Body emphasis */
 
 .reveal strong {
   color: $george-darkred;
@@ -84,30 +74,37 @@ $font-family-sans-serif: "Montserrat", sans-serif;
 
 
 /* remove slide border line */
-
 .reveal section {
   border-top: none !important;
 }
 
 /* remove heading underline */
-
 .reveal h1,
 .reveal h2,
 .reveal h3 {
   border-bottom: none !important;
 }
 
-/* ensure no horizontal rule styling appears */
-
+/* also ensure no horizontal rule styling appears */
 .reveal hr {
   display: none;
 }
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  margin-bottom: 0.25em;
+}
+
+
+
+
 
 
 /* Title slide banner */
 
 .reveal .title-slide h1 {
-  font-family: "Dancing Script", cursive;
+  font-family: "Bangers", cursive;
   background: linear-gradient(180deg, #ffea00 0%, #ffffff 30%);
   color: $george-lightblue;
   border: 4px solid #3A2A1A;
@@ -120,24 +117,24 @@ $font-family-sans-serif: "Montserrat", sans-serif;
 }
 
 
-/* Pipeline layout */
 
 
 
+/* pipeline */
 .pipeline {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px;
-  font-size: 0.8em;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  margin-bottom: 18px;
 }
-
 
 .pipeline-step {
   background: $george-cream;
   border: 3px solid $george-orange;
   border-radius: 14px;
-  padding: 4px 10px;
+  padding: 10px 16px;
   font-weight: 700;
   color: $george-brown;
   box-shadow: 2px 2px 0 rgba(58, 42, 26, 0.12);
@@ -148,77 +145,10 @@ $font-family-sans-serif: "Montserrat", sans-serif;
   color: $george-darkred;
 }
 
+
 .pipeline-arrow {
-  font-size: 1.1em;
+  font-size: 1.6em;
   color: $george-green;
   padding: 0 0.0em;
   text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
 }
-
-
-/* ------------------------------------------------ */
-/* Curious George Title Slide Styling               */
-/* ------------------------------------------------ */
-
-.reveal .title-slide {
-  position: relative;
-  text-align: center;
-}
-
-
-/* Yellow banner behind title */
-
-.reveal .title-slide h1 {
-  font-family: "Dancing Script", cursive;
-  background: #ffea00;
-  border: 4px solid #3A2A1A;
-  border-radius: 18px;
-  padding: 18px 30px;
-  display: inline-block;
-  margin-bottom: 20px;
-  box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
-}
-
-
-/* Subtitle styling */
-
-.reveal .title-slide .subtitle {
-  font-size: 0.9em;
-  color: #66331a;
-  margin-top: 10px;
-}
-
-
-/* Curious George character */
-
-.reveal .title-slide::after {
-  content: "";
-  position: absolute;
-
-  bottom: -10px;
-  right: 10px;
-
-  width: 240px;
-  height: 240px;
-
-  background-image: url("img/Curious_George.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: bottom right;
-
-  filter: drop-shadow(5px 6px 0 rgba(0,0,0,0.2));
-
-  pointer-events: none;
-}
-
-
-/* Slight slide padding so George fits */
-
-.reveal .title-slide .quarto-title-block {
-  padding-bottom: 40px;
-}
-
-
-
-
-

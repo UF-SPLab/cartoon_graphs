@@ -8,6 +8,8 @@ format:
     theme:
       - serif
       - george.scss
+    template-partials:
+      - title-slide.html
     slide-number: true
     incremental: true
     transition: fade
@@ -32,45 +34,96 @@ execute:
 library(tidyverse)
 library(janitor)
 
-garfield_cols <- c(
-  orange = "#F28C28",
-  dark_orange = "#D96A1B",
-  cream = "#F6E7C1",
-  beige = "#FAF2DA",
-  brown = "#3A2A1A",
-  tan = "#E8D3A7",
-  red = "#B7410E"
+
+george_cols <- c(
+  yellow      = "#ffea00",
+  lightblue   = "#0095ff",
+  orange      = "#ffaa00",
+  green       = "#75c360",
+  kgreen      = "#a7c360",
+  khaki       = "#c3ae60",
+  darkred     = "#c40000",
+  red         = "#ff1414",
+  pink        = "#ffc4c4",
+  darkbrown   = "#66331a",
+  brown       = "#7a541f",
+  palesalmon  = "#ffdcc7",
+  cream       = "#F6E7C1",
+  beige       = "#FAF2DA",
+  black       = "#3A2A1A",
+  tan         = "#E8D3A7",
+  redbrown    = "#B7410E"
 )
 
-scale_color_garfield <- function(...) {
+scale_color_george <- function(...) {
   ggplot2::scale_color_manual(
-    values = c("#F28C28", "#D96A1B", "#B7410E", "#A66A2C", "#6E4B2A"),
+    values = c(
+      "#0095ff", # lightblue
+      "#ffaa00", # orange
+      "#75c360", # green
+      "#c40000", # darkred
+      "#7a541f"  # brown
+    ),
     ...
   )
 }
 
-scale_fill_garfield <- function(...) {
+scale_fill_george <- function(...) {
   ggplot2::scale_fill_manual(
-    values = c("#F28C28", "#D96A1B", "#E8D3A7", "#F6E7C1", "#B7410E"),
+    values = c(
+      "#ffea00", # yellow
+      "#0095ff", # lightblue
+      "#75c360", # green
+      "#F6E7C1", # cream
+      "#ffaa00"  # orange
+    ),
     ...
   )
 }
 
-theme_garfield <- function(base_size = 18, base_family = "sans") {
+theme_george <- function(base_size = 18, base_family = "Montserrat") {
   ggplot2::theme_minimal(base_size = base_size, base_family = base_family) +
     ggplot2::theme(
-      plot.background = ggplot2::element_rect(fill = "#FAF2DA", color = NA),
-      panel.background = ggplot2::element_rect(fill = "#F6E7C1", color = NA),
-      panel.grid.major = ggplot2::element_line(color = "#E8D3A7", linewidth = 0.5),
+      plot.background = ggplot2::element_rect(fill = "#FAF2DA", color = NA),   # beige
+      panel.background = ggplot2::element_rect(fill = "#F6E7C1", color = NA),  # cream
+      panel.grid.major = ggplot2::element_line(color = "#E8D3A7", linewidth = 0.5), # tan
       panel.grid.minor = ggplot2::element_blank(),
-      plot.title = ggplot2::element_text(face = "bold", color = "#B7410E", size = base_size * 1.2),
-      plot.subtitle = ggplot2::element_text(color = "#6E4B2A"),
-      axis.title = ggplot2::element_text(color = "#3A2A1A", face = "bold"),
-      axis.text = ggplot2::element_text(color = "#3A2A1A"),
-      legend.title = ggplot2::element_text(face = "bold", color = "#3A2A1A"),
-      legend.text = ggplot2::element_text(color = "#3A2A1A"),
-      strip.background = ggplot2::element_rect(fill = "#F28C28", color = "#D96A1B"),
-      strip.text = ggplot2::element_text(color = "#3A2A1A", face = "bold")
+
+      plot.title = ggplot2::element_text(
+        face = "bold",
+        color = "#c40000",   # darkred
+        size = base_size * 1.2,
+        family = "Dancing Script"
+      ),
+      plot.subtitle = ggplot2::element_text(
+        color = "#66331a",   # darkbrown
+        family = base_family
+      ),
+
+      axis.title = ggplot2::element_text(
+        color = "#3A2A1A",   # black
+        face = "bold"
+      ),
+      axis.text = ggplot2::element_text(
+        color = "#3A2A1A"
+      ),
+
+      legend.title = ggplot2::element_text(
+        face = "bold",
+        color = "#3A2A1A"
+      ),
+      legend.text = ggplot2::element_text(
+        color = "#3A2A1A"
+      ),
+
+      strip.background = ggplot2::element_rect(
+        fill = "#ffea00",    # yellow
+        color = "#ffaa00"    # orange
+      ),
+      strip.text = ggplot2::element_text(
+        color = "#3A2A1A",
+        face = "bold"
+      )
     )
 }
 
@@ -113,7 +166,26 @@ We need a pipeline to move from **files** to **tidy variables** to **validated s
 
 ::: {.pipeline .center} 
 
-<span class="pipeline-step active fragment">Provision</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Import</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Tidy</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Transform</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Visualize/Validate</span> <span class="pipeline-arrow fragment">➡</span> <span class="pipeline-step fragment">Re-Visualize</span>
+
+
+<span class="pipeline-step active fragment">Provision</span>
+<span class="pipeline-arrow fragment">➡</span>
+
+<span class="pipeline-step fragment">Import</span>
+<span class="pipeline-arrow fragment">➡</span>
+
+<span class="pipeline-step fragment">Tidy</span>
+<span class="pipeline-arrow fragment">➡</span>
+
+<span class="pipeline-step fragment">Transform</span>
+<span class="pipeline-arrow fragment">➡</span>
+
+<span class="pipeline-step fragment">Visualize/Validate</span>
+<span class="pipeline-arrow fragment">➡</span>
+
+<span class="pipeline-step fragment">Re-Visualize</span>
+
+
 
 :::
 
@@ -483,4 +555,4 @@ Close by linking the pipeline to reproducibility, transparency, and methods repo
 
 ## Credits 
 
-- [Hero Fandom: Garfield](https://hero.fandom.com/wiki/Garfield)
+By Margret and H. A. Rey, Houghton Mifflin Harcourt Publishing Co. - <a rel="nofollow" class="external free" href="http://www.curiousgeorge.com/~/media/sites/CG/Resources/Inspire_Curiosity_Kit.pdf">http://www.curiousgeorge.com/~/media/sites/CG/Resources/Inspire_Curiosity_Kit.pdf</a>, page 9, <a href="//en.wikipedia.org/wiki/File:Curious_George.png" title="Fair use of copyrighted material in the context of Curious George">Fair use</a>, <a href="https://en.wikipedia.org/w/index.php?curid=43398475">Link</a>
